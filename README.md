@@ -5,7 +5,7 @@ You can easily use it with your favorite modloader **forge**, **neoforge**, **fa
 We are constantly working on fixing bugs, adding new features and providing you with the best possible quality. If you need support for this mod you can always [contact our support team](https://eternalempires.link/ff35d0).
 
 ## Crystal bonus
-By using this mod we activate the crystal bonus for you, you automatically pay less crystals for your ingame purchases!
+By using this mod we activate the crystal bonus for you, you automatically pay less crystals for your in-game purchases!
 Click [here](https://eternalempires.link/382d81) to learn more about the crystal bonus.
 
 ## Supported features:
