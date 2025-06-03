@@ -7,7 +7,7 @@ body:
     id: description
     attributes:
       label: Describe your idea
-      description: Please provide a raw or complete concent of the feature
+      description: Please provide a raw or complete content of the feature
       placeholder: A detailed description, possibly with examples or concept arts.
     validations:
       required: true
