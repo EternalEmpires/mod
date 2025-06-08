@@ -1,0 +1,14 @@
+plugins {
+    id 'unimined-common'
+}
+
+repositories {
+    maven {
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.Vatuu:discord-rpc:1.6.2'
+}
