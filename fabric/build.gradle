@@ -1,0 +1,37 @@
+plugins {
+    id 'unimined-fabric'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+repositories {
+    maven { url = "https://jm.gserv.me/repository/maven-public/" }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${gradle.ext.fabric_api_version}"
+
+    implementation 'com.github.Vatuu:discord-rpc:1.6.2'
+}
+
+shadowJar {
+    archiveClassifier.set('shadowed')
+    configurations = [project.configurations.runtimeClasspath] // instead of shadowImpl
+    relocate 'com.discordrpc', 'your.mod.shadowed.discordrpc'
+    exclude 'com/sun/jna/**'
+}
+
+jar {
+    enabled = false
+}
+
+remapJar {
+    dependsOn shadowJar
+    inputFile.set(shadowJar.archiveFile)
+}
+
+remapJar.doFirst {
+    println "Remapping JAR from: ${shadowJar.archiveFile.get().asFile}"
+}
+
+build.dependsOn remapJar
