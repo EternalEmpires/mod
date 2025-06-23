@@ -9,8 +9,8 @@ By using this mod we activate the crystal bonus for you, you automatically pay l
 Click [here](https://eternalempires.link/382d81) to learn more about the crystal bonus.
 
 ## Supported features:
+- [x] Discord will now show that you are currently playing Eternal Empires, and the region you are in.
 - [ ] Direct playback of voicelines in game, no more /audio needed.
-- [ ] Discord will now show that you are currently playing Eternal Empires.
 - [ ] Improves the placing and breaking of blocks in the game.
 
 ![Eternal Empires Banner](https://cdn.eternalempires.dev/image/21d63fde-9d3b-4f69-9fed-1fcbade499f2.png)

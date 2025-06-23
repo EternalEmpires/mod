@@ -1,0 +1,37 @@
+plugins {
+    id 'unimined-forge' // <-- Go here for Forge mixin configuration (CTRL+Left Click)
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+repositories {
+    repositories {
+        maven {
+            url = "https://jm.gserv.me/repository/maven-public/"
+        }
+    }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.Vatuu:discord-rpc:1.6.2'
+}
+
+shadowJar {
+    archiveClassifier.set('shadowed')
+    configurations = [project.configurations.runtimeClasspath]
+
+    // Relocate Discord RPC (shade into your namespace)
+    relocate 'com.discordrpc', 'your.mod.shadowed.discordrpc'
+    exclude 'com/sun/jna/**'
+}
+
+remapJar {
+    dependsOn shadowJar
+    inputFile.set(shadowJar.archiveFile)
+}
+
+tasks.build.dependsOn remapJar
+
+artifacts {
+    archives shadowJar
+}
