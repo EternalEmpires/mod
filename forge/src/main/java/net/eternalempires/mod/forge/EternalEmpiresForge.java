@@ -8,22 +8,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.eternalempires.mod.common.Constants;
-import net.eternalempires.mod.common.ExampleMod;
+import net.eternalempires.mod.common.EternalEmpires;
 import net.eternalempires.mod.common.client.DiscordRPCManager;
-import net.eternalempires.mod.common.client.ExampleModClient;
+import net.eternalempires.mod.common.client.EternalEmpiresClient;
 import net.eternalempires.mod.forge.network.PacketHandler;
 
 @Mod(Constants.MOD_ID)
-public class ExampleModForge {
-    public ExampleModForge() {
-        ExampleMod.init();
+public class EternalEmpiresForge {
+    public EternalEmpiresForge() {
+        EternalEmpires.init();
     }
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void clientSetup(final FMLClientSetupEvent event) {
-            ExampleModClient.init();
+            EternalEmpiresClient.init();
             event.enqueueWork(PacketHandler::register);
         }
     }

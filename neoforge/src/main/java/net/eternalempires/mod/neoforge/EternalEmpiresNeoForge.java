@@ -11,22 +11,22 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.eternalempires.mod.common.Constants;
-import net.eternalempires.mod.common.ExampleMod;
+import net.eternalempires.mod.common.EternalEmpires;
 import net.eternalempires.mod.common.client.DiscordRPCManager;
-import net.eternalempires.mod.common.client.ExampleModClient;
+import net.eternalempires.mod.common.client.EternalEmpiresClient;
 import net.eternalempires.mod.neoforge.network.EternalEmpiresPacketPayload;
 
 @Mod(Constants.MOD_ID)
-public class ExampleModNeoForge {
-    public ExampleModNeoForge() {
-        ExampleMod.init();
+public class EternalEmpiresNeoForge {
+    public EternalEmpiresNeoForge() {
+        EternalEmpires.init();
     }
 
     @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void clientSetup(final FMLClientSetupEvent event) {
-            ExampleModClient.init();
+            EternalEmpiresClient.init();
         }
 
         @SubscribeEvent

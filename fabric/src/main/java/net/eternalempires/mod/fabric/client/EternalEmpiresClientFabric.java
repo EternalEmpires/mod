@@ -12,14 +12,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.client.DiscordRPCManager;
-import net.eternalempires.mod.common.client.ExampleModClient;
+import net.eternalempires.mod.common.client.EternalEmpiresClient;
 
 import java.nio.charset.StandardCharsets;
 
-public class ExampleModFabricClient implements ClientModInitializer {
+public class EternalEmpiresClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ExampleModClient.init();
+        EternalEmpiresClient.init();
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerData serverData = Minecraft.getInstance().getCurrentServer();
