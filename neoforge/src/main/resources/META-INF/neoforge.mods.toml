@@ -1,5 +1,5 @@
 modLoader = "javafml" #mandatory
-loaderVersion = "*" #mandatory. Allow all forge versions as we are definding what Minecraft versions we requre later on
+loaderVersion = "*" #mandatory. Allow all forge versions as we are defining what Minecraft versions we require later on
 license = "${license}" # Review your options at https://choosealicense.com/.
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 #clientSideOnly=true #optional

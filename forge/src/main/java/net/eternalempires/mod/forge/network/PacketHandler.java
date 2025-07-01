@@ -1,5 +1,6 @@
 package net.eternalempires.mod.forge.network;
 
+import net.eternalempires.mod.common.network.UpdateDiscordRpcPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.NetworkDirection;
@@ -15,10 +16,12 @@ public class PacketHandler {
             .simpleChannel();
 
     public static void register() {
-        INSTANCE.messageBuilder(EternalEmpiresPacket.class, NetworkDirection.PLAY_TO_CLIENT)
-                .encoder(EternalEmpiresPacket::encode)
-                .decoder(EternalEmpiresPacket::new)
-                .consumerMainThread(EternalEmpiresPacket::handle)
+        INSTANCE.messageBuilder(UpdateDiscordRpcPayload.class, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(UpdateDiscordRpcPayload::encode)
+                .decoder(UpdateDiscordRpcPayload::new)
+                .consumerMainThread((packet, ctx) -> {
+                    packet.handlePayload(); // No need for Forge context!
+                })
                 .add();
     }
 }

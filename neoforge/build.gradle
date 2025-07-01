@@ -28,7 +28,7 @@ shadowJar {
     }
 
     // Relocate only Discord RPC
-    relocate 'com.discordrpc', 'your.mod.shadowed.discordrpc'
+    relocate 'com.discordrpc', 'net.eternalempires.shadowed.discordrpc'
 
     // Exclude problematic packages
     exclude 'com/sun/jna/**'

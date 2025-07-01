@@ -17,7 +17,7 @@ dependencies {
 shadowJar {
     archiveClassifier.set('shadowed')
     configurations = [project.configurations.runtimeClasspath] // instead of shadowImpl
-    relocate 'com.discordrpc', 'your.mod.shadowed.discordrpc'
+    relocate 'com.discordrpc', 'net.eternalempires.shadowed.discordrpc'
     exclude 'com/sun/jna/**'
 }
 

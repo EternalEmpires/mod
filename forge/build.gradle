@@ -21,7 +21,7 @@ shadowJar {
     configurations = [project.configurations.runtimeClasspath]
 
     // Relocate Discord RPC (shade into your namespace)
-    relocate 'com.discordrpc', 'your.mod.shadowed.discordrpc'
+    relocate 'com.discordrpc', 'net.eternalempires.shadowed.discordrpc'
     exclude 'com/sun/jna/**'
 }
 

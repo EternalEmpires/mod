@@ -1,5 +1,6 @@
 package net.eternalempires.mod.neoforge;
 
+import net.eternalempires.mod.common.network.UpdateDiscordRpcPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.neoforged.api.distmarker.Dist;
@@ -14,7 +15,6 @@ import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.EternalEmpires;
 import net.eternalempires.mod.common.client.DiscordRPCManager;
 import net.eternalempires.mod.common.client.EternalEmpiresClient;
-import net.eternalempires.mod.neoforge.network.EternalEmpiresPacketPayload;
 
 @Mod(Constants.MOD_ID)
 public class EternalEmpiresNeoForge {
@@ -35,61 +35,49 @@ public class EternalEmpiresNeoForge {
                     .versioned("1")
                     .optional();
             registrar.playToClient(
-                    EternalEmpiresPacketPayload.TYPE,
-                    EternalEmpiresPacketPayload.STREAM_CODEC,
-                    (eternalEmpiresPacketPayload, iPayloadContext) -> iPayloadContext.enqueueWork( () -> {
-                        Constants.LOGGER.fine("[EternalEmpires] Received JSON: " + eternalEmpiresPacketPayload.json());
+                    UpdateDiscordRpcPayload.TYPE,
+                    UpdateDiscordRpcPayload.BYTEBUF_CODEC,
+                    (updateDiscordRpcPayload, iPayloadContext) -> iPayloadContext.enqueueWork( () -> {
+                        Constants.LOGGER.fine("[EternalEmpires] Received JSON: " + updateDiscordRpcPayload.json());
 
-                        String regionName = extractRegionName(eternalEmpiresPacketPayload.json());
-                        if (regionName != null) {
-                            Constants.LOGGER.fine("[EternalEmpires] Updating location: " + regionName);
-                            DiscordRPCManager.updateLocation(regionName);
-                        }
+                        updateDiscordRpcPayload.handlePayload();
                     })
             );
         }
     }
 
-    private static String extractRegionName(String json) {
-        try {
-            int dataStart = json.indexOf("\"data\":");
-            if (dataStart == -1) return null;
-
-            int nameStart = json.indexOf("\"name\":", dataStart);
-            if (nameStart == -1) return null;
-
-            int valueStart = json.indexOf("\"", nameStart + 7);
-            int valueEnd = json.indexOf("\"", valueStart + 1);
-            return json.substring(valueStart + 1, valueEnd);
-
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
     public static class ServerConnectionHandler {
+        private static String lastServerIP = null;
+
         @SubscribeEvent
-        public static void onJoin(ClientPlayerNetworkEvent.LoggingIn event) {
-            Minecraft mc = Minecraft.getInstance();
-            ServerData serverData = mc.getCurrentServer();
+        public static void onPlayerLogin(ClientPlayerNetworkEvent.LoggingIn event) {
+            ServerData serverData = Minecraft.getInstance().getCurrentServer();
 
             if (serverData != null) {
                 String ip = serverData.ip;
                 Constants.LOGGER.fine("Joined server: " + ip);
 
-                if (Constants.SERVER_IPS.contains(ip)) {
-                    Constants.LOGGER.fine("✅ Matched IP. Starting Discord RPC.");
-                    DiscordRPCManager.start();
+                if (!ip.equals(lastServerIP)) {
+                    if (Constants.SERVER_IPS.contains(ip)) {
+                        Constants.LOGGER.fine("✅ IP matched! Starting Discord RPC.");
+                        DiscordRPCManager.start();
+                    }
+                } else {
+                    Constants.LOGGER.fine("🔁 Bungee switch detected. Keeping Discord RPC running.");
                 }
+
+                lastServerIP = ip;
             }
         }
 
         @SubscribeEvent
-        public static void onLeave(ClientPlayerNetworkEvent.LoggingOut event) {
-            if (DiscordRPCManager.isStarted()) {
-                Constants.LOGGER.fine("🛑 Leaving server. Stopping Discord RPC.");
+        public static void onPlayerLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+            // If IP is known and not a Bungee switch
+            if (lastServerIP != null && DiscordRPCManager.isStarted()) {
+                Constants.LOGGER.fine("🛑 Disconnected from server: " + lastServerIP + ". Stopping Discord RPC.");
                 DiscordRPCManager.stop();
+                lastServerIP = null;
             }
         }
     }

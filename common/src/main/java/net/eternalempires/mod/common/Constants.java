@@ -11,9 +11,9 @@ public class Constants {
     public static final List<@NotNull String> SERVER_IPS = List.of("beta.eternalempires.dev");
     public static final Logger LOGGER = Logger.getLogger(MOD_ID);
 
-    public static final org.slf4j.Logger newLogger = org.slf4j.LoggerFactory.getLogger(MOD_ID);
+    public static final String discordApplicationId = "1191464487191056404";
 
-    public static void isTesting(boolean value) {
+    public static void setTesting(boolean value) {
         if (value) {
             LOGGER.setLevel(Level.FINE);
         } else {
