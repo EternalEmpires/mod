@@ -22,7 +22,7 @@ public class DiscordRPCManager {
                 .build();
 
         //DiscordRPC.discordInitialize("1379773116787724329", handlers, true);
-        DiscordRPC.discordInitialize(Constants.discordApplicationId, handlers, true);
+        DiscordRPC.discordInitialize(Constants.DISCORD_APPLICATION_ID, handlers, true);
 
         DiscordRichPresence presence = new DiscordRichPresence.Builder("Playing on Eternal Empires")
                 .setDetails("")

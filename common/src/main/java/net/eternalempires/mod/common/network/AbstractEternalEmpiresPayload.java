@@ -1,5 +1,7 @@
 package net.eternalempires.mod.common.network;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.eternalempires.mod.common.Constants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -44,12 +46,8 @@ public abstract class AbstractEternalEmpiresPayload implements CustomPacketPaylo
 
     protected String extractJsonField(String fieldName) {
         try {
-            int fieldStart = json.indexOf("\"" + fieldName + "\":");
-            if (fieldStart == -1) return null;
-
-            int valueStart = json.indexOf("\"", fieldStart + fieldName.length() + 3);
-            int valueEnd = json.indexOf("\"", valueStart + 1);
-            return json.substring(valueStart + 1, valueEnd);
+            JsonObject jsonObj = JsonParser.parseString(json).getAsJsonObject();
+            return jsonObj.has(fieldName) ? jsonObj.get(fieldName).getAsString() : null;
         } catch (Exception e) {
             return null;
         }

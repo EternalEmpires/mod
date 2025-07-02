@@ -6,6 +6,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.client.DiscordRPCManager;
+import org.jetbrains.annotations.NotNull;
 
 public class UpdateDiscordRpcPayload extends AbstractEternalEmpiresPayload {
 
@@ -36,7 +37,7 @@ public class UpdateDiscordRpcPayload extends AbstractEternalEmpiresPayload {
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public @NotNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
