@@ -20,7 +20,7 @@ public class PacketHandlersFabric {
 
                 } catch (Exception e) {
                     Constants.LOGGER.severe("Failed to handle payload: " + e.getMessage());
-                    Constants.LOGGER.severe("Stack trace: " + java.util.Arrays.toString(e.getStackTrace()));
+                    Constants.LOGGER.log(java.util.logging.Level.SEVERE, "Failed to handle payload", e);
                 }
             });
         });

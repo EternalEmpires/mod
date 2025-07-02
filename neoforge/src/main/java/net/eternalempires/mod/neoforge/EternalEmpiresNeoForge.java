@@ -37,7 +37,7 @@ public class EternalEmpiresNeoForge {
             registrar.playToClient(
                     UpdateDiscordRpcPayload.TYPE,
                     UpdateDiscordRpcPayload.BYTEBUF_CODEC,
-                    (updateDiscordRpcPayload, iPayloadContext) -> iPayloadContext.enqueueWork( () -> {
+                    (updateDiscordRpcPayload, context) -> context.enqueueWork( () -> {
                         Constants.LOGGER.fine("[EternalEmpires] Received JSON: " + updateDiscordRpcPayload.json());
 
                         updateDiscordRpcPayload.handlePayload();

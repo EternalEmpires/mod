@@ -42,7 +42,7 @@ public class UpdateDiscordRpcPayload extends AbstractEternalEmpiresPayload {
     }
 
     private String extractRegionName() {
-        return extractJsonField("name");
+        return extractJsonField("data.name");
     }
 
     @Override
