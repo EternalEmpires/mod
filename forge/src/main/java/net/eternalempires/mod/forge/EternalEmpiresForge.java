@@ -28,7 +28,7 @@ public class EternalEmpiresForge {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = "eternalempires", value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @Mod.EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ServerConnectionHandler {
         private static String lastServerIP = null;
 

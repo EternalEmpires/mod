@@ -48,7 +48,9 @@ def loadVersionProperties() {
     def mcVersion = hasProperty("mc_ver") ? mc_ver : ""
     def mcIndex = mcVers.indexOf(mcVersion)
 
-    assert mcIndex != -1 : "MC version $mcVersion not found in $mcVers. Is the 'mc_ver' property correctly set?"
+    if (mcIndex == -1) {
+        throw new GradleException("MC version $mcVersion not found in $mcVers. Is the 'mc_ver' property correctly set?")
+    }
 
     def props = new Properties()
     props.load(new FileInputStream("$rootDir/versionProperties/${mcVersion}.properties"))
