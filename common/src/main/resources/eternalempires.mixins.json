@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.sam.eternalempires.mixins",
+  "package": "net.eternalempires.mod.common.mixins",
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
   ],
