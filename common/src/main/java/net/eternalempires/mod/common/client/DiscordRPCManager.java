@@ -28,7 +28,7 @@ public class DiscordRPCManager {
                 .setDetails("")
                 //.setBigImage("icon", "Eternal Adventure")
                 .setBigImage("eternalempires_e_1400x1400", "EternalEmpires.net")
-                .setSmallImage("grasblock", "Minecraft " + Constants.VERSION)  //new line, for small image
+                .setSmallImage("grassblock", "Minecraft " + Constants.VERSION)  //new line, for small image
                 .setStartTimestamps(startTimeStamp)
                 .build();
 
