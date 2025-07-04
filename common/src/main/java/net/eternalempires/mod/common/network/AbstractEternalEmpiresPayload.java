@@ -1,6 +1,9 @@
 package net.eternalempires.mod.common.network;
 
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.Strictness;
 import com.google.gson.stream.JsonReader;
 import lombok.extern.slf4j.Slf4j;
 import net.eternalempires.mod.common.Constants;
@@ -18,12 +21,14 @@ public abstract class AbstractEternalEmpiresPayload implements CustomPacketPaylo
             new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "mod"));
 
     protected final byte[] data;
+
     protected final String json;
 
     public AbstractEternalEmpiresPayload(FriendlyByteBuf buffer) {
         this.data = new byte[buffer.readableBytes()];
-        buffer.readBytes(this.data);
         this.json = new String(this.data, StandardCharsets.UTF_8);
+
+        buffer.readBytes(this.data);
     }
 
     public AbstractEternalEmpiresPayload(byte[] data) {

@@ -7,7 +7,8 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 
 @Slf4j
 public class PacketHandlersFabric {
-    @SuppressWarnings("resource")
+
+    @SuppressWarnings("resource") //todo: correct?
     public static void register() {
         PayloadTypeRegistry.playS2C().register(UpdateDiscordRpcPayload.TYPE, UpdateDiscordRpcPayload.FABRIC_CODEC);
 
@@ -15,10 +16,9 @@ public class PacketHandlersFabric {
             context.client().execute(() -> {
                 try {
                     log.info("Received payload: {}", payload.toString());
-                    payload.handlePayload();
 
+                    payload.handlePayload();
                 } catch (Exception e) {
-                    log.warn("Failed to handle payload: {}", e.getMessage());
                     log.warn("Failed to handle payload ", e);
                 }
             });

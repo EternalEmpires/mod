@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
 @Slf4j
 public class EternalEmpiresClientFabric implements ClientModInitializer {
+
     private static String lastServerIP = null;
 
     @Override
@@ -19,16 +20,18 @@ public class EternalEmpiresClientFabric implements ClientModInitializer {
         EternalEmpiresClient.init();
         PacketHandlersFabric.register();
 
-        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            ServerData serverData = Minecraft.getInstance().getCurrentServer();
+        ClientPlayConnectionEvents.JOIN.register((_, _, _) -> {
+            final ServerData serverData = Minecraft.getInstance().getCurrentServer();
 
             if (serverData != null) {
-                String ip = serverData.ip;
+                final String ip = serverData.ip;
+
                 log.info("Joined server: {}", ip);
 
                 if (!ip.equals(lastServerIP)) {
                     if (Constants.SERVER_IPS.contains(ip)) {
                         log.info("IP matched! Starting Discord RPC.");
+
                         DiscordRPCManager.start();
                     }
                 } else {
@@ -39,10 +42,12 @@ public class EternalEmpiresClientFabric implements ClientModInitializer {
             }
         });
 
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+        ClientPlayConnectionEvents.DISCONNECT.register((_, _) -> {
             if (lastServerIP != null && DiscordRPCManager.isStarted()) {
                 log.info("Disconnected from server: {}. Stopping Discord RPC.", lastServerIP);
+
                 DiscordRPCManager.stop();
+
                 lastServerIP = null;
             }
         });

@@ -17,15 +17,18 @@ import net.eternalempires.mod.forge.network.PacketHandler;
 @Slf4j
 @Mod(Constants.MOD_ID)
 public class EternalEmpiresForge {
+
     public EternalEmpiresForge() {
         EternalEmpires.init();
     }
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
+
         @SubscribeEvent
         public static void clientSetup(final FMLClientSetupEvent event) {
             EternalEmpiresClient.init();
+
             event.enqueueWork(PacketHandler::register);
         }
     }
@@ -36,15 +39,17 @@ public class EternalEmpiresForge {
 
         @SubscribeEvent
         public static void onPlayerLogin(ClientPlayerNetworkEvent.LoggingIn event) {
-            ServerData serverData = Minecraft.getInstance().getCurrentServer();
+            final ServerData serverData = Minecraft.getInstance().getCurrentServer();
 
             if (serverData != null) {
-                String ip = serverData.ip;
+                final String ip = serverData.ip;
+
                 log.info("Joined server: {}", ip);
 
                 if (!ip.equals(lastServerIP)) {
                     if (Constants.SERVER_IPS.contains(ip)) {
                         log.info("IP matched! Starting Discord RPC.");
+
                         DiscordRPCManager.start();
                     }
                 } else {
@@ -60,7 +65,9 @@ public class EternalEmpiresForge {
             // If IP is known and not a Bungee switch
             if (lastServerIP != null && DiscordRPCManager.isStarted()) {
                 log.info("Disconnected from server: {}. Stopping Discord RPC.", lastServerIP);
+
                 DiscordRPCManager.stop();
+
                 lastServerIP = null;
             }
         }
