@@ -2,6 +2,7 @@ package net.eternalempires.mod.common.network;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import lombok.extern.slf4j.Slf4j;
 import net.eternalempires.mod.common.Constants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 public abstract class AbstractEternalEmpiresPayload implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<UpdateDiscordRpcPayload> TYPE =
@@ -59,7 +61,7 @@ public abstract class AbstractEternalEmpiresPayload implements CustomPacketPaylo
             reader.setStrictness(Strictness.LENIENT);
             root = JsonParser.parseReader(reader);
         } catch (JsonSyntaxException e) {
-            Constants.LOGGER.warning("Failed to parse JSON field '" + fieldName + "': " + e.getMessage());
+            log.warn("Failed to parse JSON field '{}': {}", fieldName, e.getMessage());
             return null;
         }
 

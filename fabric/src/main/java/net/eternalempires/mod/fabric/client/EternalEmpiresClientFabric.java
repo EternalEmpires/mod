@@ -1,5 +1,6 @@
 package net.eternalempires.mod.fabric.client;
 
+import lombok.extern.slf4j.Slf4j;
 import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.client.DiscordRPCManager;
 import net.eternalempires.mod.common.client.EternalEmpiresClient;
@@ -9,28 +10,29 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
+@Slf4j
 public class EternalEmpiresClientFabric implements ClientModInitializer {
     private static String lastServerIP = null;
 
     @Override
     public void onInitializeClient() {
         EternalEmpiresClient.init();
-        PacketHandlersFabric.register(); // move packet logic here
+        PacketHandlersFabric.register();
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             ServerData serverData = Minecraft.getInstance().getCurrentServer();
 
             if (serverData != null) {
                 String ip = serverData.ip;
-                Constants.LOGGER.fine("Joined server: " + ip);
+                log.info("Joined server: {}", ip);
 
                 if (!ip.equals(lastServerIP)) {
                     if (Constants.SERVER_IPS.contains(ip)) {
-                        Constants.LOGGER.fine("✅ IP matched! Starting Discord RPC.");
+                        log.info("IP matched! Starting Discord RPC.");
                         DiscordRPCManager.start();
                     }
                 } else {
-                    Constants.LOGGER.fine("🔁 Bungee switch detected. Keeping Discord RPC running.");
+                    log.info("Bungee switch detected. Keeping Discord RPC running.");
                 }
 
                 lastServerIP = ip;
@@ -38,9 +40,8 @@ public class EternalEmpiresClientFabric implements ClientModInitializer {
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            // If IP is known and not a Bungee switch
             if (lastServerIP != null && DiscordRPCManager.isStarted()) {
-                Constants.LOGGER.fine("🛑 Disconnected from server: " + lastServerIP + ". Stopping Discord RPC.");
+                log.info("Disconnected from server: {}. Stopping Discord RPC.", lastServerIP);
                 DiscordRPCManager.stop();
                 lastServerIP = null;
             }

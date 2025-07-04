@@ -1,5 +1,6 @@
 package net.eternalempires.mod.forge;
 
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,6 +14,7 @@ import net.eternalempires.mod.common.client.DiscordRPCManager;
 import net.eternalempires.mod.common.client.EternalEmpiresClient;
 import net.eternalempires.mod.forge.network.PacketHandler;
 
+@Slf4j
 @Mod(Constants.MOD_ID)
 public class EternalEmpiresForge {
     public EternalEmpiresForge() {
@@ -38,15 +40,15 @@ public class EternalEmpiresForge {
 
             if (serverData != null) {
                 String ip = serverData.ip;
-                Constants.LOGGER.fine("Joined server: " + ip);
+                log.info("Joined server: {}", ip);
 
                 if (!ip.equals(lastServerIP)) {
                     if (Constants.SERVER_IPS.contains(ip)) {
-                        Constants.LOGGER.fine("✅ IP matched! Starting Discord RPC.");
+                        log.info("IP matched! Starting Discord RPC.");
                         DiscordRPCManager.start();
                     }
                 } else {
-                    Constants.LOGGER.fine("🔁 Bungee switch detected. Keeping Discord RPC running.");
+                    log.info("Bungee switch detected. Keeping Discord RPC running.");
                 }
 
                 lastServerIP = ip;
@@ -57,7 +59,7 @@ public class EternalEmpiresForge {
         public static void onPlayerLogout(ClientPlayerNetworkEvent.LoggingOut event) {
             // If IP is known and not a Bungee switch
             if (lastServerIP != null && DiscordRPCManager.isStarted()) {
-                Constants.LOGGER.fine("🛑 Disconnected from server: " + lastServerIP + ". Stopping Discord RPC.");
+                log.info("Disconnected from server: {}. Stopping Discord RPC.", lastServerIP);
                 DiscordRPCManager.stop();
                 lastServerIP = null;
             }

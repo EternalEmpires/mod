@@ -1,10 +1,13 @@
 package net.eternalempires.mod.common.client;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.arikia.dev.drpc.*;
 import net.eternalempires.mod.common.Constants;
 
+@Slf4j
 public class DiscordRPCManager {
-
+    @Getter
     private static boolean started = false;
     private static Thread callbackThread;
     private static long startTimeStamp;
@@ -16,12 +19,9 @@ public class DiscordRPCManager {
         startTimeStamp = System.currentTimeMillis();
 
         DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
-                .setReadyEventHandler((user) -> {
-                    Constants.LOGGER.fine("Discord RPC ready for user: " + user.username);
-                })
+                .setReadyEventHandler((user) -> log.info("Discord RPC ready for user: {}", user.username))
                 .build();
 
-        //DiscordRPC.discordInitialize("1379773116787724329", handlers, true);
         DiscordRPC.discordInitialize(Constants.DISCORD_APPLICATION_ID, handlers, true);
 
         DiscordRichPresence presence = new DiscordRichPresence.Builder("Playing on Eternal Empires")
@@ -57,11 +57,7 @@ public class DiscordRPCManager {
         }
 
         DiscordRPC.discordShutdown();
-        Constants.LOGGER.fine("Discord RPC stopped.");
-    }
-
-    public static boolean isStarted() {
-        return started;
+        log.info("Discord RPC stopped.");
     }
 
     public static void updateLocation(String location) {

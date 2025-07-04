@@ -1,10 +1,10 @@
 package net.eternalempires.mod.common.client;
 
-import net.eternalempires.mod.common.Constants;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class EternalEmpiresClient {
     public static void init() {
-        Constants.setTesting(true);  //pass `false` when building to disable logs
-        Constants.LOGGER.fine("Client Init.");
+        log.info("Client Init.");
     }
 }
