@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.client.EternalEmpiresClient;
+import net.eternalempires.mod.common.network.packet.ModCheckPayload;
 import net.eternalempires.mod.common.network.packet.UpdateDiscordRpcPayload;
 import net.eternalempires.mod.common.util.CommonService;
+import net.eternalempires.mod.common.util.modlistcheck.ModCheckHandler;
+import net.eternalempires.mod.neoforge.client.NeoForgeModListProvider;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -43,6 +46,7 @@ public final class ClientModEvents {
         final Injector injector = EternalEmpiresClient.init();
 
         commonService = injector.getInstance(CommonService.class);
+        ModCheckHandler.setModListProvider(new NeoForgeModListProvider());
     }
 
     /**
@@ -64,12 +68,22 @@ public final class ClientModEvents {
                     context.enqueueWork(() -> {
                         log.debug("Received JSON: {}", updateDiscordRpcPayload.json());
 
+                        assert commonService != null;
                         updateDiscordRpcPayload.handlePayload(Objects.requireNonNull(
                                 commonService.getRichPresenceService(),
                                 "ClientModEvents is not initialized!"
                         ));
                     });
                 }
+        );
+
+        registrar.playToClient(
+                ModCheckPayload.TYPE,
+                ModCheckPayload.BYTEBUF_CODEC,
+                (modCheckPayload, context) -> context.enqueueWork(() -> {
+                    log.info("[EternalEmpires] Received ModCheck JSON: {}", modCheckPayload.json());
+                    modCheckPayload.handlePayload();
+                })
         );
     }
 }
