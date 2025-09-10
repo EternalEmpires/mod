@@ -51,11 +51,6 @@ import java.nio.charset.StandardCharsets;
  */
 @Slf4j
 public abstract class AbstractEternalEmpiresPayload implements CustomPacketPayload {
-
-    @NotNull
-    public static final CustomPacketPayload.Type<@NotNull UpdateDiscordRpcPayload> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "mod"));
-
     protected final byte[] data;
 
     @Nullable
@@ -170,5 +165,8 @@ public abstract class AbstractEternalEmpiresPayload implements CustomPacketPaylo
      * @apiNote Will likely be moved in the future to a more robust handling.
      * @param service this is an instance of the RichPresenceService.
      */
-    public abstract void handlePayload(@NotNull RichPresenceService service);
+    public void handlePayload(@NotNull RichPresenceService service) {};
+
+    //Parameter-less handlePayload() for ModCheckPayload
+    public void handlePayload() {};
 }
