@@ -13,4 +13,4 @@ Click [here](https://eternalempires.link/382d81) to learn more about the crystal
 - [ ] Direct playback of voicelines in game, no more /audio needed.
 - [ ] Improves the placing and breaking of blocks in the game.
 
-![Eternal Empires Banner](https://cdn.eternalempires.dev/image/21d63fde-9d3b-4f69-9fed-1fcbade499f2.png)
+![Eternal Empires Banner](https://cdn.eternalempires.net/image/21d63fde-9d3b-4f69-9fed-1fcbade499f2.png)
