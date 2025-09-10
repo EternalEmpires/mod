@@ -26,6 +26,7 @@ package net.eternalempires.mod.forge.network;
 
 import com.google.inject.Inject;
 import net.eternalempires.mod.common.Constants;
+import net.eternalempires.mod.common.network.packet.ModCheckPayload;
 import net.eternalempires.mod.common.network.packet.UpdateDiscordRpcPayload;
 import net.eternalempires.mod.common.util.discord.RichPresenceService;
 import net.minecraft.resources.ResourceLocation;
@@ -55,6 +56,20 @@ public final class PacketHandler {
                 .add(UpdateDiscordRpcPayload.class, UpdateDiscordRpcPayload.FORGE_CODEC,
                         (packet, context) -> {
                             packet.handlePayload(richPresenceService);
+                        })
+                .build();
+
+        @NotNull SimpleChannel checkProhibitedMods = ChannelBuilder.named(
+                        ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "modcheck"))
+                .serverAcceptedVersions((status, i) -> true)
+                .clientAcceptedVersions((status, i) -> true)
+                .networkProtocolVersion(1)
+                .simpleChannel()
+                .play()
+                .clientbound()
+                .add(ModCheckPayload.class, ModCheckPayload.FORGE_CODEC,
+                        (packet, context) -> {
+                            packet.handlePayload();
                         })
                 .build();
     }
