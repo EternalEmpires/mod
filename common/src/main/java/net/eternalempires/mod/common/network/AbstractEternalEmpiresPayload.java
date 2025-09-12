@@ -167,6 +167,14 @@ public abstract class AbstractEternalEmpiresPayload implements CustomPacketPaylo
      */
     public void handlePayload(@NotNull RichPresenceService service) {};
 
-    //Parameter-less handlePayload() for ModCheckPayload
-    public void handlePayload() {};
+    /**
+     * Handles the payload without requiring any external service dependencies.
+     * This variant exists to support subclasses such as
+     * {@link net.eternalempires.mod.common.network.packet.ModCheckPayload},
+     * which perform their own internal processing without relying on
+     * {@link net.eternalempires.mod.common.util.discord.RichPresenceService}.
+     * Default implementation is a no-op; subclasses should override to provide
+     * concrete handling logic.
+     */
+    public void handlePayload() {}
 }
