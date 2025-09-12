@@ -29,6 +29,8 @@ import lombok.Getter;
 import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.client.EternalEmpiresClient;
 import net.eternalempires.mod.common.util.CommonService;
+import net.eternalempires.mod.common.util.modlistcheck.ModCheckHandler;
+import net.eternalempires.mod.forge.client.ForgeModListProvider;
 import net.eternalempires.mod.forge.network.PacketHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
@@ -65,5 +67,7 @@ public final class ClientModEvents {
         final PacketHandler packetHandler = injector.getInstance(PacketHandler.class);
 
         event.enqueueWork(packetHandler::register);
+
+        ModCheckHandler.setModListProvider(new ForgeModListProvider());
     }
 }

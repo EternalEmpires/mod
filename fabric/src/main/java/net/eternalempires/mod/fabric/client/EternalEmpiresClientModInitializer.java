@@ -27,6 +27,7 @@ package net.eternalempires.mod.fabric.client;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
 import net.eternalempires.mod.common.client.EternalEmpiresClient;
+import net.eternalempires.mod.common.util.modlistcheck.ModCheckHandler;
 import net.eternalempires.mod.fabric.listeners.JoinListener;
 import net.eternalempires.mod.fabric.listeners.LogoutListener;
 import net.eternalempires.mod.fabric.network.PacketHandlersFabric;
@@ -53,5 +54,7 @@ public final class EternalEmpiresClientModInitializer implements ClientModInitia
 
         ClientPlayConnectionEvents.JOIN.register(injector.getInstance(JoinListener.class));
         ClientPlayConnectionEvents.DISCONNECT.register(injector.getInstance(LogoutListener.class));
+
+        ModCheckHandler.setModListProvider(new FabricModListProvider());
     }
 }

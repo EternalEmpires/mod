@@ -26,12 +26,14 @@ package net.eternalempires.mod.common.network.packet;
 
 import io.netty.buffer.ByteBuf;
 import lombok.extern.slf4j.Slf4j;
+import net.eternalempires.mod.common.Constants;
 import net.eternalempires.mod.common.network.AbstractEternalEmpiresPayload;
 import net.eternalempires.mod.common.util.discord.RichPresenceService;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,6 +49,10 @@ import org.jetbrains.annotations.Nullable;
  */
 @Slf4j
 public final class UpdateDiscordRpcPayload extends AbstractEternalEmpiresPayload {
+
+    @NotNull
+    public static final CustomPacketPayload.Type<@NotNull UpdateDiscordRpcPayload> TYPE =
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "mod"));
 
     @NotNull
     public static final StreamCodec<@NotNull ByteBuf, @NotNull UpdateDiscordRpcPayload> BYTEBUF_CODEC =

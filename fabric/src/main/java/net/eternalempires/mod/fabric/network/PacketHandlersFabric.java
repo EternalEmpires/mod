@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.eternalempires.mod.common.network.packet.ModCheckPayload;
 import net.eternalempires.mod.common.network.packet.UpdateDiscordRpcPayload;
 import net.eternalempires.mod.common.util.discord.RichPresenceService;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -50,8 +51,10 @@ public final class PacketHandlersFabric {
 
     public void register() {
         PayloadTypeRegistry.playS2C().register(UpdateDiscordRpcPayload.TYPE, UpdateDiscordRpcPayload.FABRIC_CODEC);
+        PayloadTypeRegistry.playS2C().register(ModCheckPayload.TYPE, ModCheckPayload.FABRIC_CODEC);
 
-        ClientPlayNetworking.registerGlobalReceiver(UpdateDiscordRpcPayload.TYPE, this::handleContext);
+        ClientPlayNetworking.registerGlobalReceiver(UpdateDiscordRpcPayload.TYPE, this::handleRpcContext);
+        ClientPlayNetworking.registerGlobalReceiver(ModCheckPayload.TYPE, this::handleModListContext);
     }
 
     /**
@@ -61,7 +64,7 @@ public final class PacketHandlersFabric {
      * @param payload the payload
      * @param context the context
      */
-    private void handleContext(
+    private void handleRpcContext(
             final @NotNull UpdateDiscordRpcPayload payload,
             final @NotNull ClientPlayNetworking.Context context
     ) {
@@ -74,6 +77,20 @@ public final class PacketHandlersFabric {
                 payload.handlePayload(richPresenceService);
             } catch (Exception e) {
                 log.error("Failed to handle payload [{}]", payload.getClass().getName(), e);
+            }
+        });
+    }
+
+    private void handleModListContext(
+            final @NotNull ModCheckPayload payload,
+            final @NotNull ClientPlayNetworking.Context context
+    ) {
+        context.client().execute(() -> {
+            try {
+                log.info("Received ModCheck payload: {}", payload);
+                payload.handlePayload();
+            } catch (Exception e) {
+                log.warn("Failed to handle ModCheck payload ", e);
             }
         });
     }
